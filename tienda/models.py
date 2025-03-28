@@ -15,7 +15,7 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
     categoria = models.CharField(max_length=20, choices=Categoria.choices)
     stock = models.PositiveIntegerField(default=0)
-    
+
     archivo_audio = models.FileField(upload_to='discos/', blank=True, null=True)  # solo para discos
 
     def __str__(self):
