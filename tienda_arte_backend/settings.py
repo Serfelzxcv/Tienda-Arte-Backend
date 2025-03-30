@@ -67,8 +67,10 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # frontend Vite
-]
+    "http://localhost:5174",
 
+]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'tienda_arte_backend.urls'
 
@@ -100,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'shoping_art_db',
         'USER': 'postgres',
-        'PASSWORD': '0',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '5432',
     }

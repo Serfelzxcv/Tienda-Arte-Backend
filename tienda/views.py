@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Producto, Carrito, CarritoItem, Orden, OrdenItem
+from .models import Producto, Carrito, CarritoItem, Orden, OrdenItem,Categoria  
 from .serializers import (
     ProductoSerializer,
     CarritoSerializer,
@@ -27,6 +27,13 @@ class ProductoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class ProductoCuadrosListView(generics.ListAPIView):
+    serializer_class = ProductoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_queryset(self):
+        return Producto.objects.filter(categoria=Categoria.CUADRO)
 
 # --- Ver carrito del usuario ---
 class CarritoView(APIView):
