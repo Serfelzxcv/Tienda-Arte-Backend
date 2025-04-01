@@ -8,7 +8,9 @@ from .views import (
     EliminarItemCarritoView,
     CrearOrdenView,
     HistorialOrdenesView,
-    ProductoCuadrosListView
+    ProductoCuadrosListView,
+    ProductoEsculturasListView,
+    ProductoDiscosListView
 )
 
 urlpatterns = [ 
@@ -19,6 +21,8 @@ urlpatterns = [
     path('productos/', ProductoListCreateView.as_view(), name='productos'),
     path('productos/<int:pk>/', ProductoDetailView.as_view(), name='producto-detalle'),
     path('productos/cuadros/', ProductoCuadrosListView.as_view(), name='productos-cuadros'),
+    path('productos/esculturas/', ProductoEsculturasListView.as_view(), name='productos-esculturas'),
+    path('productos/discos/', ProductoDiscosListView.as_view(), name='productos-discos'),
     
     # Carrito
     path('carrito/', CarritoView.as_view(), name='carrito'),

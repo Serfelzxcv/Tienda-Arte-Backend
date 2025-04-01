@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('imagen', models.ImageField(blank=True, null=True, upload_to='productos/')),
                 ('categoria', models.CharField(choices=[('CUADRO', 'Cuadro'), ('ESCULTURA', 'Escultura'), ('DISCO', 'Disco')], max_length=20)),
                 ('stock', models.PositiveIntegerField(default=0)),
-                ('archivo_audio', models.FileField(blank=True, null=True, upload_to='discos/')),
+                ('archivo_audio', models.FileField(blank=True, null=True, )),
             ],
         ),
         migrations.CreateModel(

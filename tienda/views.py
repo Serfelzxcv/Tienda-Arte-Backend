@@ -35,6 +35,20 @@ class ProductoCuadrosListView(generics.ListAPIView):
     def get_queryset(self):
         return Producto.objects.filter(categoria=Categoria.CUADRO)
 
+class ProductoEsculturasListView(generics.ListAPIView):
+    serializer_class = ProductoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_queryset(self):
+        return Producto.objects.filter(categoria=Categoria.ESCULTURA)
+
+class ProductoDiscosListView(generics.ListAPIView):
+    serializer_class = ProductoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_queryset(self):
+        return Producto.objects.filter(categoria=Categoria.DISCO)
+
 # --- Ver carrito del usuario ---
 class CarritoView(APIView):
     permission_classes = [permissions.IsAuthenticated]
