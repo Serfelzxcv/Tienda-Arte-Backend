@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from tienda.serializers import CustomTokenObtainPairSerializer
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -12,6 +13,11 @@ from rest_framework_simplejwt.views import (
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+
+
+
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -27,7 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tienda.urls')), 
     # JWT
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', TokenObtainPairView.as_view(serializer_class=CustomTokenObtainPairSerializer), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # App tienda

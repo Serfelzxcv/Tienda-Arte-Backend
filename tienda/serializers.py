@@ -1,8 +1,24 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Producto, Carrito, CarritoItem, Orden, OrdenItem
+from .models import Producto, Carrito, CarritoItem, Orden, OrdenItem, Profile
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # Usuario (registro)
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Agrega datos del usuario a la respuesta
+        user = self.user
+        data['user'] = {
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'dinero': user.profile.dinero  # Accede al saldo a través del Profile
+        }
+        return data
+# serializers.py
 class RegistroSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -19,7 +35,15 @@ class RegistroSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', '')
         )
         Carrito.objects.create(usuario=user)
+        Profile.objects.create(user=user)  # Crear perfil con saldo 0
         return user
+    
+# Profile
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['dinero']
+        read_only_fields = ['user']
 
 # Producto
 class ProductoSerializer(serializers.ModelSerializer):

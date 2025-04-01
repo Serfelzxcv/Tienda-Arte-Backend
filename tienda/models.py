@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Perfil de los usuarios, con saldo
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    dinero = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username} - Saldo: {self.dinero}"
+
 # Categorías fijas para los productos
 class Categoria(models.TextChoices):
     CUADRO = 'CUADRO', 'Cuadro'
@@ -15,7 +23,7 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
     categoria = models.CharField(max_length=20, choices=Categoria.choices)
     stock = models.PositiveIntegerField(default=0)
-    
+
     def __str__(self):
         return f"{self.nombre} ({self.categoria})"
 

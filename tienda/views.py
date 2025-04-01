@@ -31,7 +31,7 @@ class ProductoDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ProductoCuadrosListView(generics.ListAPIView):
     serializer_class = ProductoSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
+
     def get_queryset(self):
         return Producto.objects.filter(categoria=Categoria.CUADRO)
 

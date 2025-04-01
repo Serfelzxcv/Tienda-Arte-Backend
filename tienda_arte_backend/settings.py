@@ -102,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'shoping_art_db',
         'USER': 'postgres',
-        'PASSWORD': 'root',
+        'PASSWORD': '0',
         'HOST': 'localhost',
         'PORT': '5432',
     }
