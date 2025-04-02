@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Producto, Carrito, CarritoItem, Orden, OrdenItem, Profile
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import Carrito, ItemCarrito
 
 # Usuario (registro)
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -54,28 +55,24 @@ class ProductoSerializer(serializers.ModelSerializer):
 
 # Ítem del carrito
 class CarritoItemSerializer(serializers.ModelSerializer):
-    producto = ProductoSerializer(read_only=True)
-    producto_id = serializers.PrimaryKeyRelatedField(
-        queryset=Producto.objects.all(), source='producto', write_only=True
-    )
-
     class Meta:
         model = CarritoItem
-        fields = ['id', 'producto', 'producto_id', 'cantidad', 'total']
+        fields = ['id', 'producto', 'cantidad']
 
 
 # Carrito completo
+
+class ItemCarritoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemCarrito
+        fields = ['producto', 'cantidad']
+        
 class CarritoSerializer(serializers.ModelSerializer):
-    items = CarritoItemSerializer(many=True, read_only=True)
-    total = serializers.SerializerMethodField()
+    items = CarritoItemSerializer(many=True, source='carrito_items')  # Usa el nuevo related_name
 
     class Meta:
         model = Carrito
-        fields = ['id', 'usuario', 'creado', 'items', 'total']
-
-    def get_total(self, obj):
-        return obj.total()
-
+        fields = ['id', 'usuario', 'items', 'creado', 'actualizado']
 
 # OrdenItem
 class OrdenItemSerializer(serializers.ModelSerializer):
