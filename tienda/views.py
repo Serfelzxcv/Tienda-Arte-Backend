@@ -125,3 +125,40 @@ def obtener_carrito(request):
     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
     serializer = CarritoSerializer(carrito)
     return Response(serializer.data)
+
+# views.py
+class AgregarAlCarritoView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        items = request.data.get('items', [])  # Esperar una lista de items
+        
+        if not items:
+            return Response({"error": "No se proporcionaron items"}, status=400)
+
+        carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+        resultados = []
+        
+        for item_data in items:
+            producto_id = item_data.get('producto_id')
+            cantidad = item_data.get('cantidad', 1)
+            
+            if not producto_id:
+                resultados.append({"error": f"Falta el ID del producto en un item"})
+                continue
+            
+            try:
+                producto = Producto.objects.get(id=producto_id)
+            except Producto.DoesNotExist:
+                resultados.append({"error": f"Producto {producto_id} no existe"})
+                continue
+            
+            item, item_created = CarritoItem.objects.get_or_create(
+                carrito=carrito,
+                producto=producto
+            )
+            item.cantidad += int(cantidad)
+            item.save()
+            resultados.append({"mensaje": f"Producto {producto_id} agregado"})
+        
+        return Response({"resultados": resultados}, status=201)

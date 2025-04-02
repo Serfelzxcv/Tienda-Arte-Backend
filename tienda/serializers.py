@@ -58,6 +58,7 @@ class CarritoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarritoItem
         fields = ['id', 'producto', 'cantidad']
+        depth = 1
 
 
 # Carrito completo
